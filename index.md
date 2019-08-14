@@ -7,7 +7,7 @@ layout: default
 
 ATLAS is one of the four main experiments at the Large Hadron Collider(LHC) at CERN. Athena is the main software framework of ATLAS that manages almost all ATLAS bulk production workflows. Athena was originally designed as single-threaded and then upgraded to run in multi-process, AthenaMP. However, even AthenaMP is not a permanent solution to the increasing computing demand which comes with expectations beyond Run2. Therefore, Athena is currently being upgraded to run in multi-threaded(MT) environment, namely AthenaMT.
 
-Performance of ATLAS code is very important in the sense that serving to ever-growing datasets within the constraints of limited computing resources. The current performance monitoring service has various shortcomings and need an upgrade: It is only able to monitor single-threaded Athena jobs, hence it is not thread-safe. Besides, it's tied to [Incidents](https://acode-browser1.usatlas.bnl.gov/lxr/source/Gaudi/GaudiKernel/GaudiKernel/Incident.h#0021) that'll be obsolete with AthenaMT. It is also hard to maintain and needs a clean-up. 
+Performance of ATLAS code is very important in the sense that serving to ever-growing datasets within the constraints of limited computing resources. The current performance monitoring service has various shortcomings and needs an upgrade: It is only able to monitor single-threaded Athena jobs, hence it is not thread-safe. Besides, it's tied to [Incidents](https://acode-browser1.usatlas.bnl.gov/lxr/source/Gaudi/GaudiKernel/GaudiKernel/Incident.h#0021) that'll be obsolete with AthenaMT. It is also hard to maintain and needs a clean-up. 
  
 # Work Completed
 
@@ -17,13 +17,13 @@ A component of a typical AthenaMT job has following standard steps: Initialize, 
 
 ### CPU & Wall Time Monitoring
 
-CPU & Wall Time are measured at different levels throughout the execution of the job. As a starting point, Initialize, Execute and Finalize steps are monitored as a whole. This give a rough information about how much time these steps take compared to each other. In addition, one can compare the CPU & Wall time for the event loop and see at which degree concurrency is achieved.
+CPU & Wall Time are measured at different levels throughout the execution of the job. As a starting point, Initialize, Execute and Finalize steps are monitored as a whole. This gives a rough information about how much time these steps take compared to each other. In addition, one can compare the CPU & Wall time for the event loop and see at which degree concurrency is achieved.
 
 We also present component level monitoring which gives much more detailed information. It is implemented separately for serial and parallel steps and presented separately as well. By looking at these results, one can see the CPU usage of each component and identify the bottlenecks accordingly for the job.
 
 ### Memory Monitoring
 
-Currently, memory monitoring is implemented just for the serial steps. In the context of memory we measure **Virtual Memory**, **Resident Set Size (Rss)**, **Proportional Set Size (Pss)** and **Swap** size for each component. It is possible to list memory usage of components in an descending order and see which components use the memory the most using these statistics.
+Currently, memory monitoring is implemented just for the serial steps. In the context of memory we measure **Virtual Memory**, **Resident Set Size (Rss)**, **Proportional Set Size (Pss)** and **Swap** size for each component. It is possible to list memory usage of components in a descending order and see which components use the memory the most using these statistics.
 
 # Outputs
 
@@ -35,7 +35,7 @@ Apart from basic measurements, some useful statistics such as **Number of events
 # Testing & Verification
 
 The old service is successful in monitoring serial steps and the measurements for these steps are tested with the old service. 
-Total time passed in the event loop is verified with result returned by **AthenaHiveEventLoopMgr**. Detailed information on these tests could be found in this [presentation](https://indico.cern.ch/event/835550/contributions/3502557/attachments/1882410/3113511/PerfMonMTSvc_v5.pdf)
+Total time passed in the event loop is verified with the result returned by **AthenaHiveEventLoopMgr**. Detailed information on these tests could be found in this [presentation](https://indico.cern.ch/event/835550/contributions/3502557/attachments/1882410/3113511/PerfMonMTSvc_v5.pdf).
 
 The memory monitoring results will be verified with the results of [PrMon](https://github.com/HSF/prmon) which is another resource monitoring program developed by CERN scientists. Unlike our service(PerfMonMTSvc), prmon does not have a prior knowledge about the job that it monitors. Therefore it just measures the memory based on timestamps. Therefore our service should be configured to record the measurements by timestamps for comparison purposes.
 
@@ -67,15 +67,15 @@ The memory monitoring results will be verified with the results of [PrMon](https
 
 ##### Presentation
 
-*   A detailed presentation about the project can be reach by this [link]()
+*   A detailed presentation about the project can be reached by this [link](https://indico.cern.ch/event/835550/contributions/3502557/attachments/1882410/3113511/PerfMonMTSvc_v5.pdf)
 
 ##### Merge Requests
 
-*   I have submitted 2 merge requests including all my work throughout the summer. Both of them were merged and they can seen using these links: [MR1](https://gitlab.cern.ch/atlas/athena/merge_requests/25237)  [MR2](https://gitlab.cern.ch/atlas/athena/merge_requests/25790)
+*   I have submitted 2 merge requests including all my work throughout the summer. Both of them were merged and they can be seen using these links: [MR1](https://gitlab.cern.ch/atlas/athena/merge_requests/25237),  [MR2](https://gitlab.cern.ch/atlas/athena/merge_requests/25790)
 
 ##### Source Code
 
-Here are the links to the all class for this project:
+Here are the links to the all classes for this project:
 
 | Header Files        | Code Files          | Scripts | Job Option Files |
 |:--------------------|:--------------------|:--------|:-----------------|
@@ -87,4 +87,4 @@ Here are the links to the all class for this project:
 
 # Final Words & Acknowledgements
 
-It has been a great summer for me. I would like to thank mentors Davide Costanzo, James Catmore and especially Alaettin Serhan Mete for his continuous support throughout the timeline. I look forward to continue to contribute to the project and see future challenges!
+It has been a great summer for me. I would like to thank mentors Davide Costanzo, James Catmore and especially Alaettin Serhan Mete for his continuous support throughout the coding period. I look forward to continue to contribute to the project and see future challenges!
