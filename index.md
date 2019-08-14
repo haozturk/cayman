@@ -2,6 +2,7 @@
 layout: default
 ---
 
+
 # Introduction
 
 ATLAS is one of the four main experiments at the Large Hadron Collider(LHC) at CERN. Athena is the main software framework of ATLAS that manages almost all ATLAS bulk production workflows. Athena was originally designed as single-threaded and then upgraded to run in multi-process, AthenaMP. However, even AthenaMP is not a permanent solution to the increasing computing demand which comes with expectations beyond Run2. Therefore, Athena is currently being upgraded to run in multi-threaded(MT) environment, namely AthenaMT.
