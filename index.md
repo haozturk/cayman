@@ -5,7 +5,7 @@ layout: default
 
 
 
-ATLAS is one of the four main experiments at the Large Hadron Collider(LHC) at CERN. Athena is the main software framework of ATLAS that manages almost all ATLAS bulk production workflows. Athena was originally designed as single-threaded and then upgraded to run in multi-process, AthenaMP. However, even AthenaMP is not a permanent solution to the increasing computing demand which comes with expectations beyond Run2. Therefore, Athena is currently being upgraded to run in multi-threaded(MT) environment, namely AthenaMT.
+ATLAS is one of the four main experiments at the Large Hadron Collider(LHC) at CERN. Athena is the main software framework of ATLAS that manages almost all ATLAS bulk production workflows. Athena was originally designed as single-threaded and then upgraded to run in multi-process, AthenaMP. However, even AthenaMP was not a permanent solution to the increasing computing demand which comes with expectations beyond Run2. Therefore, Athena is currently being upgraded to run in multi-threaded(MT) environment, namely AthenaMT.
 
 Performance of ATLAS code is very important in the sense that serving to ever-growing datasets within the constraints of limited computing resources. The current performance monitoring service has various shortcomings and needs an upgrade: It is only able to monitor single-threaded Athena jobs, hence it is not thread-safe. Besides, it's tied to [Incidents](https://acode-browser1.usatlas.bnl.gov/lxr/source/Gaudi/GaudiKernel/GaudiKernel/Incident.h#0021) that'll be obsolete with AthenaMT. It is also hard to maintain and needs a clean-up. 
  
