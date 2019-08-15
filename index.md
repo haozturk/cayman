@@ -5,7 +5,7 @@ layout: default
 
 
 
-ATLAS is one of the four main experiments at the Large Hadron Collider(LHC) at CERN. Athena is the main software framework of ATLAS that manages almost all ATLAS bulk production workflows. Athena was originally designed as single-threaded and then upgraded to run in multi-process, AthenaMP. However, even AthenaMP was not a permanent solution to the increasing computing demand which comes with expectations beyond Run2. Therefore, Athena is currently being upgraded to run in multi-threaded(MT) environment, namely AthenaMT.
+ATLAS is one of the four main experiments at the Large Hadron Collider(LHC) at CERN. Athena is the main software framework of ATLAS that manages almost all ATLAS bulk production workflows. Athena was originally designed as single-threaded and then upgraded to run in multi-process, AthenaMP. However, even AthenaMP was not a permanent solution to the increasing computing demand which comes with the expectations beyond Run2. Therefore, Athena is currently being upgraded to run in multi-threaded(MT) environment, namely AthenaMT.
 
 Performance of ATLAS code is very important in the sense that serving to ever-growing datasets within the constraints of limited computing resources. The current performance monitoring service has various shortcomings and needs an upgrade: It is only able to monitor single-threaded Athena jobs, hence it is not thread-safe. Besides, it's tied to [Incidents](https://acode-browser1.usatlas.bnl.gov/lxr/source/Gaudi/GaudiKernel/GaudiKernel/Incident.h#0021) that'll be obsolete with AthenaMT. It is also hard to maintain and needs a clean-up. 
  
@@ -55,7 +55,7 @@ The memory monitoring results will be verified with the results of [PrMon](https
 
 *   Firstly, the shortcomings must be alleviated and the limitations should be removed as possible. Afterwards, memory monitoring for event loop should be implemented.
 
-*   It is critical to monitor disk usage, since generally it is the reading/writing operations on disk are the most ones which slow down the execution.
+*   It is critical to monitor disk usage, since generally reading/writing operations on disk are the ones which slow down the execution.
 
 *   Dynamically allocated memory size could be added as a statistic to memory monitoring to identify the memory leaks etc. The old service uses [mallinfo](http://man7.org/linux/man-pages/man3/mallinfo.3.html) function to collect it, however it's deprecated and not MT-safe.
 
@@ -65,17 +65,17 @@ The memory monitoring results will be verified with the results of [PrMon](https
 
 # Related Links
 
-##### Presentation
+#### Presentation
 
 *   A detailed presentation about the project can be reached by this [link](https://indico.cern.ch/event/835550/contributions/3502557/attachments/1882410/3113511/PerfMonMTSvc_v5.pdf)
 
-##### Merge Requests
+#### Merge Requests
 
 *   I have submitted 2 merge requests including all my work throughout the summer. Both of them were merged and they can be seen using these links: [MR1](https://gitlab.cern.ch/atlas/athena/merge_requests/25237),  [MR2](https://gitlab.cern.ch/atlas/athena/merge_requests/25790)
 
-##### Source Code
+#### Source Code
 
-Here are the links to the all classes for this project:
+*   Here are the links to the all classes written for this project:
 
 | Header Files        | Code Files          | Scripts | Job Option Files |
 |:--------------------|:--------------------|:--------|:-----------------|
