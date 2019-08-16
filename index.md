@@ -23,7 +23,7 @@ We also present component level monitoring which gives much more detailed inform
 
 ### Memory Monitoring
 
-Currently, memory monitoring is implemented just for the serial steps. In the context of memory we measure **Virtual Memory(VMEM)**, **Resident Set Size (RSS)**, **Proportional Set Size (PSS)** and **Swap** size for each component. It is possible to list memory usage of components in a descending order and see which components use the memory the most using these statistics.
+Currently, memory monitoring is implemented just for the serial steps. In the context of memory, we measure **Virtual Memory(VMEM)**, **Resident Set Size (RSS)**, **Proportional Set Size (PSS)** and **Swap** size for each component. It is possible to list memory usage of components in a descending order and see which components use the memory the most using these statistics.
 
 # Outputs
 
@@ -43,7 +43,9 @@ The collected measurements are reported to the user in various ways: First, an o
 
 ![output](output.png)
 
-Apart from basic measurements, some useful statistics such as **Number of events processed**, **Events per second** and **CPU usage per event** are also available in the output. Besides, system information including **CPU model** and **Number of cores** can be seen at the end of the output. One can make inferences on how much CPU is utilized and how much gain is obtained by multi-threaded execution using these results. 
+Apart from basic measurements, some useful statistics such as **Number of events processed**, **Events per second** and **CPU usage per event** are also available in the output. Besides, system information including **CPU model** and **Number of cores** can be seen at the end of the output. One can make inferences on how much CPU is utilized and how much gain is obtained by multi-threaded execution using these results. Here is an example result:
+
+![output2](output2.png)
 
 
 # Testing & Verification
@@ -102,6 +104,6 @@ The memory monitoring results will be verified with the results of [PrMon](https
 It has been a great summer for me. I would like to thank mentors Davide Costanzo, James Catmore and especially Alaettin Serhan Mete for his continuous support throughout the coding period. I look forward to continue to contribute to the project and see future challenges!
 
 * * *
-[1]  Seuster, R., Rauschmayr, N., Limosani, T., Stewart, G., & Mete, A. S. (2019, February 4). HSF/prmon: v1.1.1. https://zenodo.org/record/2556701#.XVcm4vxRU5k
+[1]  Seuster, R., Rauschmayr, N., Limosani, T., Stewart, G. A., & Mete, A. S. (2019, February 4). HSF/prmon: v1.1.1. https://zenodo.org/record/2556701#.XVcm4vxRU5k
 
 
