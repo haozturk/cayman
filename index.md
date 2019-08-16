@@ -5,13 +5,13 @@ layout: default
 
 
 
-ATLAS is one of the four main experiments at the Large Hadron Collider(LHC) at CERN. Athena is the main software framework of ATLAS that manages almost all ATLAS bulk production workflows. Athena was originally designed as single-threaded and then upgraded to run in multi-process, AthenaMP. However, even AthenaMP was not a permanent solution to the increasing computing demand which comes with the expectations beyond Run2. Therefore, Athena is currently being upgraded to run in multi-threaded(MT) environment, namely AthenaMT.
+ATLAS is one of the four main experiments at the Large Hadron Collider(LHC) at CERN. Athena is the main software framework of ATLAS that manages almost all ATLAS bulk production workflows. Athena was originally designed as single-threaded software framework and then upgraded to run in multi-process, AthenaMP. However, even AthenaMP was not a permanent solution to the increasing computing demand which comes with the expectations beyond Run2. Therefore, Athena is currently being upgraded to run in multi-threaded(MT) environment, namely AthenaMT.
 
 Performance of ATLAS code is very important in the sense that serving to ever-growing datasets within the constraints of limited computing resources. The current performance monitoring service has various shortcomings and needs an upgrade: It is only able to monitor single-threaded Athena jobs, hence it is not thread-safe. Besides, it's tied to [Incidents](https://acode-browser1.usatlas.bnl.gov/lxr/source/Gaudi/GaudiKernel/GaudiKernel/Incident.h#0021) that'll be obsolete with AthenaMT. It is also hard to maintain and needs a clean-up. 
  
 # Work Completed
 
-The very basic mechanism in performance monitoring is to take snapshots at the beginning and at the end of a component which is desired to be monitored. We use before and after functions which are inherited from [Auditor](https://acode-browser1.usatlas.bnl.gov/lxr/source/Gaudi/GaudiKernel/GaudiKernel/Auditor.h#0034) class of Gaudi framework for this purpose.
+Starting point in performance monitoring is to take snapshots at the beginning and at the end of a component, e.g. an algorithm, tool or service, which is desired to be monitored. We use before and after functions which are inherited from [Auditor](https://acode-browser1.usatlas.bnl.gov/lxr/source/Gaudi/GaudiKernel/GaudiKernel/Auditor.h#0034) class of Gaudi framework for this purpose.
 
 A component of a typical AthenaMT job has following standard steps: Initialize, Start, Execute, Stop and Finalize. Events are processed in execute steps and execute step is run in multi-threaded environment in AthenaMT whereas other steps are executed serialy. We have monitored serial and parallel steps separately due to their different kind of execution.
 
@@ -23,9 +23,12 @@ We also present component level monitoring which gives much more detailed inform
 
 ### Memory Monitoring
 
-Currently, memory monitoring is implemented just for the serial steps. In the context of memory we measure **Virtual Memory**, **Resident Set Size (Rss)**, **Proportional Set Size (Pss)** and **Swap** size for each component. It is possible to list memory usage of components in a descending order and see which components use the memory the most using these statistics.
+Currently, memory monitoring is implemented just for the serial steps. In the context of memory we measure **Virtual Memory(VMEM)**, **Resident Set Size (RSS)**, **Proportional Set Size (PSS)** and **Swap** size for each component. It is possible to list memory usage of components in a descending order and see which components use the memory the most using these statistics.
 
 # Outputs
+
+![Memory](mem.png)
+![snapshot](snapshot.png)
 
 The collected measurements are reported to the user in various ways: First, an output log is printed to stdout. An example output can be seen via this [link](https://indico.cern.ch/event/839941/#preview:3119598). Secondly, all measurements are written to a json file. There is a python script which plots the measurements using this json file. Example plots could be seen via these links: [link1](https://indico.cern.ch/event/835550/contributions/3502557/attachments/1882410/3102033/parallel_complevel.pdf), [link2](https://indico.cern.ch/event/835550/#preview:3123253), [link3](https://indico.cern.ch/event/835550/#preview:3123257)
 
@@ -35,25 +38,23 @@ Apart from basic measurements, some useful statistics such as **Number of events
 # Testing & Verification
 
 The old service is successful in monitoring serial steps and the measurements for these steps are tested with the old service. 
-Total time passed in the event loop is verified with the result returned by **AthenaHiveEventLoopMgr**. Detailed information on these tests could be found in this [presentation](https://indico.cern.ch/event/835550/contributions/3502557/attachments/1882410/3113511/PerfMonMTSvc_v5.pdf).
+Total time passed in the event loop is verified with the result returned by **AthenaHiveEventLoopMgr**, the default ATLAS batch event loop manager. Detailed information on these tests could be found in this [presentation](https://indico.cern.ch/event/835550/contributions/3502557/attachments/1882410/3113511/PerfMonMTSvc_v5.pdf).
 
 The memory monitoring results will be verified with the results of [PrMon](https://github.com/HSF/prmon) which is another resource monitoring program developed by CERN scientists. Unlike our service(PerfMonMTSvc), prmon does not have a prior knowledge about the job that it monitors. Therefore it just measures the memory based on timestamps. Therefore our service should be configured to record the measurements by timestamps for comparison purposes.
 
 
 # Shortcomings & Limitations
 
-*   One should be aware of the shortcomings and the limitations of the service. Firstly, mutex locks are used in the implementation of monitoring the event loop which may lead to a performance decrease of job. Event loop monitoring is optional due to the usage of locks and this option can be set from the job options file.
+*   One should be aware of the shortcomings and the limitations of the service. Firstly, mutex locks are used in the implementation of monitoring the event loop which may lead to a performance decrease of job. The overhead due to these locks are found to be negligible for the example jobs. However, this mode mainly targets debugging and doesn't have to be used in the actual jobs. Event loop monitoring is made optional due to the usage of locks and this option can be set from the job options file.
 
-*   Memory statistics are gathered from **/proc/** directory which is only mounted on UNIX-like operating systems. Therefore it's not possible to make memory monitoring on other operating systems.
+*   Memory statistics are gathered from **/proc/** directory which is only mounted on UNIX-like operating systems. Therefore it's not possible to make memory monitoring on other operating systems. However in practice this is not really a big problem as Athena jobs are currently running on CentOS7 (or a Linux derivative for the foreseeable future).
 
 *   Implementation of the event loop monitoring is based on the assumption that each event is run on a single thread entirely. As we see so far, this is the case for most of the jobs, however there may occur some problems with the usage of 3rd party algorithms if they create their own worker threads apart from Intel TBB which is the main library used in AthenaMT to enable multi-threading.
 
-*   There is a little problem with the registration of the service to the execution sequence. As a monitoring service, it is desired to be the very first service started and the very last service halted in the execution in order to monitor all components. However, in the beginning we miss 2-3 components. This problem should be fixed in the configuration of the service.
 
+# Future Work
 
-# Further Work
-
-*   Firstly, the shortcomings must be alleviated and the limitations should be removed as possible. Afterwards, memory monitoring for event loop should be implemented.
+*   Firstly, the shortcomings must be alleviated and the limitations should be removed as much as possible. Afterwards, memory monitoring for event loop should be implemented.
 
 *   It is critical to monitor disk usage, since generally reading/writing operations on disk are the ones which slow down the execution.
 
@@ -88,3 +89,7 @@ The memory monitoring results will be verified with the results of [PrMon](https
 # Final Words & Acknowledgements
 
 It has been a great summer for me. I would like to thank mentors Davide Costanzo, James Catmore and especially Alaettin Serhan Mete for his continuous support throughout the coding period. I look forward to continue to contribute to the project and see future challenges!
+
+* * *
+[1] lalala
+
