@@ -5,9 +5,9 @@ layout: default
 
 
 
-ATLAS is one of the four main experiments at the Large Hadron Collider(LHC) at CERN. Athena is the main software framework of ATLAS that manages almost all ATLAS bulk production workflows. Athena was originally designed as single-threaded software framework and then upgraded to run in multi-process, AthenaMP. However, even AthenaMP was not a permanent solution to the increasing computing demand which comes with the expectations beyond Run2. Therefore, Athena is currently being upgraded to run in multi-threaded(MT) environment, namely AthenaMT.
+ATLAS is one of the four main experiments at the Large Hadron Collider(LHC) at CERN. Athena is the main software framework of ATLAS that manages almost all ATLAS bulk production workflows. It is based on the common [Gaudi framework](http://gaudi.web.cern.ch/gaudi/) that is used by ATLAS, LHCb and FCC experiments. Athena was originally designed as a single-threaded software framework and then upgraded to run in multi-process, AthenaMP. However, even AthenaMP was not a permanent solution to the increasing computing demand which comes with the expectations beyond Run2. Therefore, Athena is currently being upgraded to run in multi-threaded(MT) environment, namely AthenaMT. The main reason behind the migration from AthenaMP to AthenaMT is that memory is a limiting factor for ATLAS computing and the main difference between MP and MT is that the latter shares memory.
 
-Performance of ATLAS code is very important in the sense that serving to ever-growing datasets within the constraints of limited computing resources. The current performance monitoring service has various shortcomings and needs an upgrade: It is only able to monitor single-threaded Athena jobs, hence it is not thread-safe. Besides, it's tied to [Incidents](https://acode-browser1.usatlas.bnl.gov/lxr/source/Gaudi/GaudiKernel/GaudiKernel/Incident.h#0021) that'll be obsolete with AthenaMT. It is also hard to maintain and needs a clean-up. 
+Performance of ATLAS code is very important in the sense that serving to ever-growing datasets within the constraints of limited computing resources. The current performance monitoring service has various shortcomings and needs an upgrade: It is only able to monitor single-threaded Athena jobs, hence it is not thread-safe. Besides, it uses the aspects of Athena/Gaudi that are going to be obsolete. In addition, it is hard to maintain and needs a clean-up. 
  
 # Work Completed
 
@@ -28,13 +28,12 @@ Currently, memory monitoring is implemented just for the serial steps. In the co
 # Outputs
 
 
-The collected measurements are reported to the user in various ways: First, an output log is printed to stdout. An example output can be seen via this [link](https://indico.cern.ch/event/839941/#preview:3119598). Secondly, all measurements are written to a json file. There is a python script which plots the measurements using this json file. Example plots could be seen via these links: [link1](https://indico.cern.ch/event/835550/contributions/3502557/attachments/1882410/3102033/parallel_complevel.pdf), [link2](https://indico.cern.ch/event/835550/#preview:3123253), [link3](https://indico.cern.ch/event/835550/#preview:3123257)
+The collected measurements are reported to the user in various ways: First, an output log is printed to stdout. An example output can be seen via this [link](https://indico.cern.ch/event/839941/#preview:3119598). Secondly, all measurements are written to a json file. There is a python script which plots the measurements using this json file. Here are some example plots:
 
 #### Memory Monitoring at Initialize Step
 
 ![Memory](mem.png)
 
-* * *
 
 #### CPU & Wall Time Summary
 
@@ -48,7 +47,7 @@ Apart from basic measurements, some useful statistics such as **Number of events
 The old service is successful in monitoring serial steps and the measurements for these steps are tested with the old service. 
 Total time passed in the event loop is verified with the result returned by **AthenaHiveEventLoopMgr**, the default ATLAS batch event loop manager. Detailed information on these tests could be found in this [presentation](https://indico.cern.ch/event/835550/contributions/3502557/attachments/1882410/3113511/PerfMonMTSvc_v5.pdf).
 
-The memory monitoring results will be verified with the results of [PrMon](https://github.com/HSF/prmon) which is another resource monitoring program developed by CERN scientists. Unlike our service(PerfMonMTSvc), prmon does not have a prior knowledge about the job that it monitors. Therefore it just measures the memory based on timestamps. Therefore our service should be configured to record the measurements by timestamps for comparison purposes.
+The memory monitoring results will be verified with the results of [PrMon](https://github.com/HSF/prmon)[1] which is another resource monitoring program developed by CERN scientists. Unlike our service(PerfMonMTSvc), prmon does not have a prior knowledge about the job that it monitors. Therefore it just measures the memory based on timestamps. Therefore our service should be configured to record the measurements by timestamps for comparison purposes.
 
 
 # Shortcomings & Limitations
@@ -99,5 +98,6 @@ The memory monitoring results will be verified with the results of [PrMon](https
 It has been a great summer for me. I would like to thank mentors Davide Costanzo, James Catmore and especially Alaettin Serhan Mete for his continuous support throughout the coding period. I look forward to continue to contribute to the project and see future challenges!
 
 * * *
-[1] lalala
+[1]  Seuster, R., Rauschmayr, N., Limosani, T., Stewart, G., & Mete, A. S. (2019, February 4). HSF/prmon: v1.1.1. https://zenodo.org/record/2556701#.XVcm4vxRU5k
+
 
