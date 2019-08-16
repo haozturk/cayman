@@ -27,10 +27,18 @@ Currently, memory monitoring is implemented just for the serial steps. In the co
 
 # Outputs
 
-![Memory](mem.png)
-![snapshot](snapshot.png)
 
 The collected measurements are reported to the user in various ways: First, an output log is printed to stdout. An example output can be seen via this [link](https://indico.cern.ch/event/839941/#preview:3119598). Secondly, all measurements are written to a json file. There is a python script which plots the measurements using this json file. Example plots could be seen via these links: [link1](https://indico.cern.ch/event/835550/contributions/3502557/attachments/1882410/3102033/parallel_complevel.pdf), [link2](https://indico.cern.ch/event/835550/#preview:3123253), [link3](https://indico.cern.ch/event/835550/#preview:3123257)
+
+#### Memory Monitoring at Initialize Step
+
+![Memory](mem.png)
+
+* * *
+
+#### CPU & Wall Time Summary
+
+![snapshot](snapshot.png)
 
 Apart from basic measurements, some useful statistics such as **Number of events processed**, **Events per second** and **CPU usage per event** are also available in the output. Besides, system information including **CPU model** and **Number of cores** can be seen at the end of the output. One can make inferences on how much CPU is utilized and how much gain is obtained by multi-threaded execution using these results. 
 
