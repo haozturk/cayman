@@ -28,7 +28,7 @@ Currently, memory monitoring is implemented just for the serial steps. In the co
 # Outputs
 
 
-The collected measurements are reported to the user in various ways: First, an output log is printed to stdout. An example output can be seen via this [link](https://indico.cern.ch/event/839941/#preview:3119598). Secondly, all measurements are written to a json file. There is a python script which plots the measurements using this json file. Here are some example plots:
+The collected measurements are reported to the user in various ways: First, an output log is printed to stdout. Secondly, all measurements are written to a json file. There is a python script which plots the measurements using this json file. Here are some example plots and a snippet of the output:
 
 #### Memory Monitoring at Initialize Step
 
@@ -38,6 +38,10 @@ The collected measurements are reported to the user in various ways: First, an o
 #### CPU & Wall Time Summary
 
 ![snapshot](snapshot.png)
+
+#### CPU & Wall Time Monitoring in the Event Loop
+
+![output](output.png)
 
 Apart from basic measurements, some useful statistics such as **Number of events processed**, **Events per second** and **CPU usage per event** are also available in the output. Besides, system information including **CPU model** and **Number of cores** can be seen at the end of the output. One can make inferences on how much CPU is utilized and how much gain is obtained by multi-threaded execution using these results. 
 
